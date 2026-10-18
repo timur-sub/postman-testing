@@ -1,0 +1,309 @@
+{
+  "info": {
+    "_postman_id": "4a380db2-7a18-467d-925d-e1867455acc3",
+    "name": "For learn",
+    "description": "# API testing: weather and another requests\n\n## О портфолио\n\nДанная коллекция создана для демонстрации навыков работы с запросами в Postman. Коллекция разделена на 2 блока: работа с реальным API (OpenWeatherMap) и работа в песочнице API (JSONPlaceholder).\n\n## Какие навыки здесь продемонстрированы:\n\n- **Работа с переменными:** Безопасное хранение API-ключа и базового URL;\n    \n- **Позитивные и негативные тесты:** Проверка успешных ответов с ответом 200 и обработка ошибок - 404 Not Found с проверкой текста ошибки;\n    \n- **Отправка запросов:** POST (создание), PUT (обновление) и DELETE (удаление) с передачей тела запроса (JSON);\n    \n- **Тесты:** Написание проверок на JavaScript. Тестирование статус-кодов, структуры и содержимого JSON-ответов, а также времени отклика сервера;\n    \n- **Pre-request Scripts:** Автоматическая генерация случайных данных (выбор случайного города из массива) перед отправкой запроса.\n    \n\n## Как запустить\n\n1. Импортируйте коллекцию и файл окружения в Postman на своём компьютере;\n    \n2. Выберите окружение в правом верхнем углу;\n    \n3. В переменной окружения `api_key` укажите ваш собственный ключ от OpenWeatherMap. Получить его можно на [https://openweathermap.org](https://openweathermap.org);\n    \n4. Нажмите право кнопкой на коллекцию и выберете Run, чтобы прогнать все тесты автоматически и увидеть отчет.\n    \n\n## Структура\n\n•  **Weather** — проверка погоды (успешные и ошибочные сценарии);  \n•  **Various requests** — демонстрация методов изменения данных.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59003467",
+    "_collection_link": "https://go.postman.co/collection/59003467-4a380db2-7a18-467d-925d-e1867455acc3?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Weather",
+      "item": [
+        {
+          "name": "Moscow",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"City name is Moscow\", function () {\n    var response = pm.response.json();\n    pm.expect(response.name).to.eql(\"Moscow\");\n});\n\npm.test(\"Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weather?q=Moscow&appid={{api_key}}&units=metric",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weather"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Moscow"
+                },
+                {
+                  "key": "appid",
+                  "value": "{{api_key}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Minsk",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"City name is Minsk\", function () {\n    var response = pm.response.json();\n    pm.expect(response.name).to.eql(\"Minsk\");\n});\n\npm.test(\"Response time is less than 500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(500);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weather?q=Minsk&appid={{api_key}}&units=metric",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weather"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Minsk"
+                },
+                {
+                  "key": "appid",
+                  "value": "{{api_key}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid city",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404 for invalid city\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Error message is present\", function () {\n    const response = pm.response.json();\n    pm.expect(response.message).to.eql(\"city not found\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weather?q=City17&appid={{api_key}}&units=metric",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weather"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "City17"
+                },
+                {
+                  "key": "appid",
+                  "value": "{{api_key}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Random city",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const cities = [\"Moscow\", \"Minsk\", \"Tokyo\", \"New York\"];\nconst randomCity = cities[Math.floor(Math.random() * cities.length)];\npm.collectionVariables.set(\"city\", randomCity);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/weather?q={{city}}&appid={{api_key}}&units=metric",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "weather"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "{{city}}"
+                },
+                {
+                  "key": "appid",
+                  "value": "{{api_key}}"
+                },
+                {
+                  "key": "units",
+                  "value": "metric"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Various requests",
+      "item": [
+        {
+          "name": "Creating a post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201 created\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Post was created with correct title\", function () {\n    const response = pm.response.json();\n    pm.expect(response.title).to.eql(\"My Project\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Project\",\n  \"body\": \"Testing POST request in Postman\",\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Title was updated successfully\", function () {\n    const response = pm.response.json();\n    pm.expect(response.title).to.eql(\"Updated Title\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 101,\n  \"title\": \"Updated Title\",\n  \"body\": \"This post has been updated\",\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body is empty\", function () {\n    pm.expect(pm.response.text()).to.be.oneOf(['{}', '']);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "city",
+      "value": ""
+    }
+  ]
+}
